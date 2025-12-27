@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Vazifalar Ro'yxati - Telegram Mini App</title>
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="description" content="Telegram Mini App - Vazifalar Ro'yxati. Kundalik ishlaringizni oson boshqaring.">
+    <title>📋 Vazifalar Ro'yxati</title>
     
     <!-- Telegram WebApp SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -19,6 +21,17 @@
             <p class="subtitle">Kundalik ishlaringizni boshqaring</p>
         </header>
 
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span class="progress-title">Bugungi progress</span>
+                <span class="progress-percent" id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+        </div>
+
         <!-- Add Task Form -->
         <div class="add-task-container">
             <input 
@@ -27,17 +40,43 @@
                 class="task-input" 
                 placeholder="Yangi vazifa qo'shing..."
                 autocomplete="off"
+                maxlength="150"
             >
-            <button id="addTaskBtn" class="add-btn">
+            <button id="addTaskBtn" class="add-btn" aria-label="Qo'shish">
                 <span>+</span>
+            </button>
+        </div>
+
+        <!-- Priority Selector -->
+        <div class="priority-container">
+            <button class="priority-btn low active" data-priority="low">
+                <span class="priority-dot low"></span>
+                Past
+            </button>
+            <button class="priority-btn medium" data-priority="medium">
+                <span class="priority-dot medium"></span>
+                O'rta
+            </button>
+            <button class="priority-btn high" data-priority="high">
+                <span class="priority-dot high"></span>
+                Yuqori
             </button>
         </div>
 
         <!-- Filter Buttons -->
         <div class="filter-container">
-            <button class="filter-btn active" data-filter="all">Hammasi</button>
-            <button class="filter-btn" data-filter="active">Faol</button>
-            <button class="filter-btn" data-filter="completed">Bajarilgan</button>
+            <button class="filter-btn active" data-filter="all">
+                Hammasi
+                <span class="count" id="countAll">0</span>
+            </button>
+            <button class="filter-btn" data-filter="active">
+                Faol
+                <span class="count" id="countActive">0</span>
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                Bajarilgan
+                <span class="count" id="countCompleted">0</span>
+            </button>
         </div>
 
         <!-- Tasks List -->
@@ -48,7 +87,7 @@
             
             <!-- Empty State -->
             <div id="emptyState" class="empty-state">
-                <span class="empty-icon">📝</span>
+                <span class="empty-icon">✨</span>
                 <p>Hozircha vazifalar yo'q</p>
                 <p class="empty-hint">Yangi vazifa qo'shish uchun yuqoridagi maydondan foydalaning</p>
             </div>
@@ -58,11 +97,17 @@
         <footer class="app-footer">
             <div class="stats">
                 <span id="totalTasks">0 ta vazifa</span>
-                <span class="separator">|</span>
+                <span class="stats-divider"></span>
                 <span id="completedTasks">0 ta bajarildi</span>
             </div>
             <button id="clearCompleted" class="clear-btn">Bajarilganlarni o'chirish</button>
         </footer>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <span class="toast-icon">✓</span>
+        <span class="toast-message" id="toastMessage">Vazifa qo'shildi!</span>
     </div>
 
     <!-- Main App Script -->
